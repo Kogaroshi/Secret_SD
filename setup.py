@@ -23,7 +23,7 @@ def setup():
     Setup all dependencies for the service
     :return:
     """
-    require(('keyboard','keyboard'),('PIL','Pillow'),('begin','begins'))
+    require(('keyboard','keyboard'),('PIL','Pillow'),('begin','begins'),('cryptography','cryptography'))
     if(sys.platform == "win32"):
         require(('pywin32','pywin32'),('tkinter','python-tk'))
     elif(sys.platform == "linux"):
