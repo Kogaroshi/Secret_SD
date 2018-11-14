@@ -6,6 +6,11 @@ import keyboard
 import begin
 
 def showPIL(pilImage):
+    """
+    display a given image in fullscreen overall
+    :param pilImage: image to display, loaded as PIL image
+    :return:
+    """
     root = tkinter.Tk()
     w, h = root.winfo_screenwidth(), root.winfo_screenheight()
     root.attributes('-fullscreen',True)
@@ -27,6 +32,11 @@ def showPIL(pilImage):
 
 @begin.start
 def run(path):
+    """
+    load the image and put it full screen overall
+    :param path: path of the image to load
+    :return:
+    """
     pilImage = Image.open(path)
     showPIL(pilImage)
 
