@@ -24,14 +24,13 @@ def lockAllWindows(*toHook):
     return alt, ctrl, altgr, shift, esc, win
 
 
-def unlockAllWindows(*hooks):
+def unlockAllWindows():
     """
     Unhook the keyboard, reactivate the task manager and remove the fullscreen image
     Take the list of hooks in argument
     :return:
     """
-    for hook in hooks:
-        keyboard.unhook(hook)
+    keyboard.unhook_all()
     oKey = winreg.CreateKeyEx(winreg.HKEY_CURRENT_USER,'Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System',0,winreg.KEY_SET_VALUE)
     winreg.SetValueEx(oKey,'DisableTaskMgr',0,winreg.REG_DWORD,0)
     keyboard.send("esc")
@@ -64,7 +63,6 @@ def imageLoader():
 
 
 if(sys.platform == "win32"):
-
     import win32file
     import winreg
     def locate_usb():
@@ -89,6 +87,12 @@ if(sys.platform == "win32"):
     esc= None
     cardPath = None
     imgPath = imageLoader()
+    alt, ctrl, altgr, shift, esc, win = lockAllWindows()
+    for drive in drives:
+        if CryptoSD.check_keys("","cleSD.txt",drive):
+            cardPath = drive
+            time.sleep(5)
+            unlockAllWindows()
     #Bloquer, checker tout les prts is clé, et delock si carte présente
     while True:
         new_drives = locate_usb()
@@ -99,7 +103,7 @@ if(sys.platform == "win32"):
                 if value not in drives:
                     print(value)
                     if CryptoSD.check_keys("","cleSD.txt",value):
-                        #unlockAllWindows([alt,ctrl,altgr,shift,win,esc])
+                        unlockAllWindows()
                         print("Right Sd Card at : "+value)
                         cardPath = value
             """keyboard.unhook(alt)
@@ -116,7 +120,7 @@ if(sys.platform == "win32"):
             for value in drives:
                 if value not in new_drives:
                     if value == cardPath :
-                    #alt, ctrl, altgr, shift, esc, win = lockAllWindows()
+                        alt, ctrl, altgr, shift, esc, win = lockAllWindows()
                         print("SD Card removed at : "+value)
                         cardPath = None
             """alt = keyboard.block_key('alt')
@@ -129,8 +133,7 @@ if(sys.platform == "win32"):
             winreg.SetValueEx(oKey,'DisableTaskMgr',0,winreg.REG_DWORD,1)
             subprocess.Popen(["python","image.py",imgPath])"""
         drives = new_drives
-        print("---------------")
-        time.sleep(0.5)
+        
 
 
 
