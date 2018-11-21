@@ -222,7 +222,7 @@ def find_cid(path):
 
     if sys.platform == "win32":
         try:
-            f = open(path[:-1], 'rb')
+            f = open("\\\\.\\"+path[:-1], 'rb')
             cid = f.read(43)[39:]   # Volume ID dans le cas de windows
         except Exception as e:
             print(path[:-1])
